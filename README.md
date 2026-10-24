@@ -4,45 +4,46 @@ Projeto educacional para praticar integração contínua de testes Cypress usand
 
 ## Objetivos
 - Conhecer a estrutura de um pipeline como código.
-- Automatizar etapas de preparação e execução dos testes.
-- Praticar execução reprodutível com containers.
+- Automatizar a instalação de dependências e a execução dos testes.
+- Praticar execução reprodutível e análise de resultados.
 
 ## Tecnologias
 - Jenkins
 - Docker
 - Cypress
 - Node.js e npm
-- Allure (artefatos de resultados presentes no repositório)
+- Allure
 
 ## Pré-requisitos
-- Docker instalado.
 - Jenkins configurado com acesso ao repositório.
-- Node.js/npm disponível no ambiente de execução, quando não fornecido pelo container.
+- Agente Windows para executar o `Jenkinsfile` atual, pois ele utiliza comandos `bat`.
+- Node.js/npm disponíveis no agente e ferramenta Jenkins NodeJS configurada com o nome `nodejs`.
+- Docker instalado para as atividades de containerização descritas nos arquivos do projeto.
 
-## Como executar
-1. Revise o `Dockerfile`, `Jenkinsfile` e `docker-comandos.txt`.
-2. Confira as portas, diretórios e dependências configuradas.
-3. Configure um job Pipeline no Jenkins apontando para o repositório.
-4. Execute o pipeline e examine os logs e resultados gerados.
+## Como executar pelo Jenkins
+1. Configure um job do tipo **Pipeline** apontando para este repositório.
+2. Confirme que o agente é Windows ou adapte os comandos do Jenkinsfile ao sistema operacional usado.
+3. Execute o job e verifique o console output para acompanhar `npm install` e `npm test`.
+4. O comando `npm test` executa `npx cypress run --browser chrome`; confirme que o Chrome e as dependências necessárias estão disponíveis no agente.
 
-Os comandos exatos dependem da configuração atual dos arquivos. Valide-os em ambiente local antes de usar em um pipeline compartilhado.
+## Execução local
+Na raiz do projeto, com Node.js/npm instalados:
 
-## Estrutura do projeto
-```text
-atividade-ci-cd-teste-exemplo/
-├── .github/
-├── cypress/
-├── logs-cypress/
-├── allure-results/
-├── Dockerfile
-├── Jenkinsfile
-├── docker-comandos.txt
-├── cypress.config.js
-└── package.json
+```bash
+npm install
+npm test
 ```
 
+Para gerar ou abrir relatórios Allure, consulte os scripts disponíveis no `package.json` e confirme que existem resultados em `allure-results`.
+
+## Arquivos principais
+- `Jenkinsfile`: pipeline para agente Windows.
+- `Dockerfile` e `docker-comandos.txt`: arquivos de apoio às atividades com Docker.
+- `cypress.config.js` e `cypress/`: configuração e testes Cypress.
+- `logs-cypress/` e `allure-results/`: diretórios de logs/resultados presentes no repositório.
+
 ## Desafios práticos
-Integrar dependências, containerização e execução de testes, além de analisar logs quando uma etapa do pipeline falha.
+Integrar dependências e execução automatizada, configurar o agente corretamente e analisar logs quando uma etapa do pipeline falha.
 
 ## Boas práticas adotadas
 - Versionamento do pipeline junto ao código.
@@ -50,10 +51,10 @@ Integrar dependências, containerização e execução de testes, além de anali
 - Armazenamento de logs e resultados para apoiar a análise.
 
 ## 📚 Aprendizados
-A atividade permite praticar conceitos de CI/CD, execução automatizada de testes e containerização, além de compreender como logs e artefatos ajudam a diagnosticar falhas do pipeline.
+A atividade permite praticar conceitos de CI/CD, execução automatizada de testes e configuração de pipeline, além de compreender como logs e artefatos ajudam a diagnosticar falhas.
 
 ## Considerações finais
-Consulte os arquivos do projeto para confirmar a sequência de comandos, os caminhos e as condições de execução do pipeline.
+A configuração do Jenkinsfile deve corresponder ao sistema operacional do agente. Antes de executar o fluxo com Docker, confira os comandos e os requisitos definidos nos arquivos do projeto.
 
 ---
 
